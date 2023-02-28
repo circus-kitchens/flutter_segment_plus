@@ -1,0 +1,62 @@
+group 'com.circuskitchens.flutter_segment_plus'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.8.10'
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
+        maven { url "https://appboy.github.io/appboy-segment-android/sdk" }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
+        maven { url "https://appboy.github.io/appboy-segment-android/sdk" }
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 31
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        // From Segment docs: https://segment.com/docs/connections/sources/catalog/libraries/mobile/kotlin-android/
+        // The SDK internally uses a number of Java 8 language APIs through desugaring.
+        // Make sure your project either enables desugaring or requires a minimum API level of 26.
+        minSdkVersion 26
+    }
+
+     dependencies {
+        implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+        implementation 'com.segment.analytics.kotlin:android:1.10.1'
+        implementation 'com.braze:braze-segment-kotlin:1.2.0'
+        implementation 'com.segment.analytics.kotlin.destinations:amplitude:1.5.2'
+//        implementation 'com.segment.analytics.kotlin.destinations:adjust:+'
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+    }
+}
