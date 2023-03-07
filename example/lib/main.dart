@@ -31,6 +31,7 @@ class _MyAppState extends State<MyApp> {
             : const String.fromEnvironment('IOS_SEGMENT_WRITE_KEY'),
         trackApplicationLifecycleEvents: true,
         collectDeviceId: true,
+        appboyIntegrationEnabled: true,
       ),
     ));
   }

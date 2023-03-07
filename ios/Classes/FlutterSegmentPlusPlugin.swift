@@ -76,7 +76,9 @@ public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
     segment.add(plugin: contextMerge)
     
     if (enableBraze) {
-      segment.add(plugin: BrazeDestination())
+      let braze = BrazeDestination()
+      braze.add(plugin: BrazeMiddleware())
+      segment.add(plugin: braze)
     }
     
     if (enableAmplitude) {

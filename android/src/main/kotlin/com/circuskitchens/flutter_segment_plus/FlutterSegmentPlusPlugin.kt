@@ -10,8 +10,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
 import com.segment.analytics.kotlin.android.Analytics
-import com.segment.analytics.kotlin.core.Analytics
-import com.segment.analytics.kotlin.core.BaseEvent
+import com.segment.analytics.kotlin.core.*
 import com.segment.analytics.kotlin.core.compat.Builders
 import com.segment.analytics.kotlin.core.platform.Plugin
 import com.segment.analytics.kotlin.core.utilities.safeJsonObject
@@ -115,7 +114,7 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
     val enableAmplitude: Boolean = configData["amplitudeIntegrationEnabled"] as Boolean? ?: false
     val enableAdjust: Boolean = configData["adjustIntegrationEnabled"] as Boolean? ?: false
 
-    val segment = Analytics(writeKey, context) {
+    val segmentInstance = Analytics(writeKey, context) {
       this.trackApplicationLifecycleEvents = trackApplicationLifecycleEvents
       flushAt = 3
       flushInterval = 10
@@ -123,7 +122,7 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
       this.trackDeepLinks = trackDeepLinks
     }
 
-    segment.add(object: Plugin {
+    segmentInstance.add(object: Plugin {
       override lateinit var analytics: Analytics
       override val type = Plugin.Type.Enrichment
 
@@ -134,12 +133,14 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
     })
 
     if (enableBraze) {
-      // TODO: add braze middleware, replace Braze integration with custom one
-      segment.add(plugin = BrazeDestination(context))
+      // TODO: replace Braze integration with custom one
+      val braze = BrazeDestination(context)
+      segmentInstance.add(plugin = braze)
+      braze.add(BrazeMiddleware())
     }
 
     if (enableAmplitude) {
-      segment.add(plugin = AmplitudeSession())
+      segmentInstance.add(plugin = AmplitudeSession())
     }
 
     if (enableAdjust) {
@@ -151,7 +152,7 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
       // implementation 'com.segment.analytics.kotlin.destinations:adjust:+'.
     }
 
-    return segment
+    return segmentInstance
   }
 
   private fun identify(call: MethodCall, segment: Analytics) {
