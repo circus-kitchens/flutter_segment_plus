@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 import Segment
-import SegmentBraze
+import SegmentBrazeCircusCustom
 import SegmentSwiftAmplitude
 
 public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {

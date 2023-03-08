@@ -13,6 +13,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
     }
 }
 
@@ -27,6 +28,7 @@ allprojects {
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlinx-serialization'
 
 android {
     compileSdkVersion 31
@@ -51,12 +53,13 @@ android {
         minSdkVersion 26
     }
 
-     dependencies {
+    dependencies {
         implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
         implementation 'com.segment.analytics.kotlin:android:1.10.1'
-        implementation 'com.braze:braze-segment-kotlin:1.2.0'
+        implementation 'com.braze:android-sdk-ui:23.2.1'
         implementation 'com.segment.analytics.kotlin.destinations:amplitude:1.5.2'
-//        implementation 'com.segment.analytics.kotlin.destinations:adjust:+'
+        implementation 'org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0'
+        // implementation 'com.segment.analytics.kotlin.destinations:adjust:+'
         testImplementation 'org.junit.jupiter:junit-jupiter'
     }
 }
