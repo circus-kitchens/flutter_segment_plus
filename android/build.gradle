@@ -58,7 +58,6 @@ android {
         implementation 'com.segment.analytics.kotlin:android:1.10.1'
         implementation 'com.braze:android-sdk-ui:23.2.1'
         implementation 'com.segment.analytics.kotlin.destinations:amplitude:1.5.2'
-        implementation 'org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0'
         // implementation 'com.segment.analytics.kotlin.destinations:adjust:+'
         testImplementation 'org.junit.jupiter:junit-jupiter'
     }

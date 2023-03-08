@@ -2,27 +2,20 @@ package com.circuskitchens.flutter_segment_plus
 
 
 import android.content.Context
-
-import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
-
 import com.segment.analytics.kotlin.android.Analytics
 import com.segment.analytics.kotlin.core.*
-import com.segment.analytics.kotlin.core.compat.Builders
 import com.segment.analytics.kotlin.core.platform.Plugin
 import com.segment.analytics.kotlin.core.utilities.safeJsonObject
 import com.segment.analytics.kotlin.core.utilities.toJsonElement
 import com.segment.analytics.kotlin.core.utilities.updateJsonObject
 import com.segment.analytics.kotlin.destinations.amplitude.AmplitudeSession
-import com.segment.analytics.kotlin.destinations.braze.BrazeDestination
-import io.flutter.Log
+import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugin.common.MethodChannel.MethodCallHandler
+import io.flutter.plugin.common.MethodChannel.Result
 import kotlinx.coroutines.*
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.*
-import kotlinx.serialization.serializer
 
 /** FlutterSegmentPlusPlugin */
 class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
