@@ -8,11 +8,11 @@ PODS:
     - Adjust (~> 4.33.4)
     - Flutter
     - Segment (~> 1.3.4)
-    - SegmentBrazeCircusCustom (~> 1.0.0)
+    - SegmentBrazeCircusCustom (~> 1.0.1)
     - SegmentSwiftAmplitude (~> 1.1.6)
   - Segment (1.3.4):
     - Sovran (~> 1.0.2)
-  - SegmentBrazeCircusCustom (1.0.0):
+  - SegmentBrazeCircusCustom (1.0.1):
     - BrazeKit (~> 5.11.0)
     - Segment (~> 1.3.4)
   - SegmentSwiftAmplitude (1.1.6):
@@ -43,9 +43,9 @@ SPEC CHECKSUMS:
   Adjust: 4690e07ea401ee56d4d3f4f5bdad86c94f51903f
   BrazeKit: 029ce86b1479d44b57e57e21039f786397d37c81
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_segment_plus: db06fb9fa60999e7c3673ae9f075e1eccb298164
+  flutter_segment_plus: 4c142ebd38e200a73c106b5c7931c148bbc4eeb9
   Segment: f89f06f6e59e83e9db113e441c914f4bd329d1b1
-  SegmentBrazeCircusCustom: 0789636dc7f248df07062a0e35a9b56cb6a280be
+  SegmentBrazeCircusCustom: 90016db464f560b3e1dee4c7b924ea6cf0de6cb8
   SegmentSwiftAmplitude: 88a9be71adb8bb1192898d49893b479517076b3b
   Sovran: d2583dc3ac0088b74024358a0158af5ec7528b01
 

@@ -19,7 +19,7 @@ Segment integration plugin for Flutter.
   s.dependency 'Segment', '~> 1.3.4'
   s.dependency 'Adjust', '~> 4.33.4'
   s.dependency 'SegmentSwiftAmplitude', '~> 1.1.6'
-  s.dependency 'SegmentBrazeCircusCustom', '~> 1.0.0'
+  s.dependency 'SegmentBrazeCircusCustom', '~> 1.0.1'
   s.platform = :ios, '9.0'
 
   # Flutter.framework does not contain a i386 slice.
