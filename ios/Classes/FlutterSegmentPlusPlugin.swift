@@ -106,7 +106,7 @@ public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
   
   func identify(_ call: FlutterMethodCall, _ segment: Analytics) {
     let arguments = call.arguments as! [String: Any?]
-    let userId = arguments["userId"] as! String?
+    let userId = arguments["userId"] as? String
     let traits = arguments["traits"] as! [String: Any]
     if (userId == nil) {
       do {
@@ -122,7 +122,7 @@ public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
   func track(_ call: FlutterMethodCall, _ segment: Analytics) {
     let arguments = call.arguments as! [String: Any?]
     let eventName = arguments["eventName"] as! String
-    let properties = arguments["properties"] as! [String: Any]?
+    let properties = arguments["properties"] as? [String: Any]
     if (properties == nil) {
       segment.track(name: eventName)
     } else {
@@ -133,7 +133,7 @@ public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
   func screen(_ call: FlutterMethodCall, _ segment: Analytics) {
     let arguments = call.arguments as! [String: Any?]
     let screenName = arguments["screenName"] as! String
-    let properties = arguments["properties"] as! [String: Any]?
+    let properties = arguments["properties"] as? [String: Any]
     if (properties == nil) {
       segment.screen(title: screenName)
     } else {
@@ -144,7 +144,7 @@ public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
   func group(_ call: FlutterMethodCall, _ segment: Analytics) {
     let arguments = call.arguments as! [String: Any?]
     let groupId = arguments["groupId"] as! String
-    let traits = arguments["traits"] as! [String: Any]?
+    let traits = arguments["traits"] as? [String: Any]?
     if (traits == nil) {
       segment.group(groupId: groupId)
     } else {
