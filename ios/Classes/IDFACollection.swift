@@ -47,7 +47,7 @@ import AppTrackingTransparency
 @available(iOS 14, *)
 class IDFACollection: Plugin {
     let type = PluginType.enrichment
-    weak var analytics: Analytics? = nil
+    weak var analytics: Analytics?
     @Atomic private var alreadyAsked = false
     
     func execute<T: RawEvent>(event: T?) -> T? {

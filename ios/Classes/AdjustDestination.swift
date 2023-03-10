@@ -41,22 +41,18 @@ class AdjustDestination: NSObject, DestinationPlugin, RemoteNotifications {
     let timeline = Timeline()
     let type = PluginType.destination
     let key = "Adjust"
-    weak var analytics: Analytics? = nil
+    weak var analytics: Analytics?
     
-    private var settings: AdjustSettings? = nil
+    private var settings: AdjustSettings?
     
-    public func update(settings: Settings, type: UpdateType) {
+    func update(settings: Settings, type: UpdateType) {
         // we've already set up this singleton SDK, can't do it again, so skip.
         guard type == .initial else { return }
         
         guard let settings: AdjustSettings = settings.integrationSettings(forPlugin: self) else { return }
         self.settings = settings
         
-        var environment = ADJEnvironmentSandbox
-        if let _ = settings.setEnvironmentProduction {
-            environment = ADJEnvironmentProduction
-        }
-        
+        let environment = settings.setEnvironmentProduction != nil ? ADJEnvironmentProduction : ADJEnvironmentSandbox;
         let adjustConfig = ADJConfig(appToken: settings.appToken, environment: environment)
         
         if let bufferingEnabled = settings.setEventBufferingEnabled {
@@ -74,7 +70,7 @@ class AdjustDestination: NSObject, DestinationPlugin, RemoteNotifications {
         Adjust.appDidLaunch(adjustConfig)
     }
     
-    public func identify(event: IdentifyEvent) -> IdentifyEvent? {
+    func identify(event: IdentifyEvent) -> IdentifyEvent? {
         if let userId = event.userId, userId.count > 0 {
             Adjust.addSessionPartnerParameter("user_id", value: userId)
         }
@@ -86,7 +82,7 @@ class AdjustDestination: NSObject, DestinationPlugin, RemoteNotifications {
         return event
     }
     
-    public func track(event: TrackEvent) -> TrackEvent? {
+    func track(event: TrackEvent) -> TrackEvent? {
         if let anonId = event.anonymousId, anonId.count > 0 {
             Adjust.addSessionPartnerParameter("anonymous_id", value: anonId)
         }
@@ -118,18 +114,18 @@ class AdjustDestination: NSObject, DestinationPlugin, RemoteNotifications {
         return event
     }
     
-    public func reset() {
+    func reset() {
         Adjust.resetSessionPartnerParameters()
     }
     
-    public func registeredForRemoteNotifications(deviceToken: Data) {
+    func registeredForRemoteNotifications(deviceToken: Data) {
         Adjust.setDeviceToken(deviceToken)
     }
 }
 
 // MARK: - Adjust Delegate conformance
 extension AdjustDestination: AdjustDelegate {
-    public func adjustAttributionChanged(_ attribution: ADJAttribution?) {
+    func adjustAttributionChanged(_ attribution: ADJAttribution?) {
         let campaign: [String: Any] = [
             "source": attribution?.network ?? NSNull(),
             "name": attribution?.campaign ?? NSNull(),
@@ -151,28 +147,18 @@ extension AdjustDestination: AdjustDelegate {
 
 // MARK: - Support methods
 extension AdjustDestination {
-    internal func mappedCustomEventToken(eventName: String) -> String? {
-        var result: String? = nil
+    func mappedCustomEventToken(eventName: String) -> String? {
+        var result: String?
         if let tokens = settings?.customEvents?.dictionaryValue {
             result = tokens[eventName] as? String
         }
         return result
     }
     
-    internal func extract<T>(key: String, from properties: [String: Any]?, withDefault value: T? = nil) -> T? {
-        var result: T? = value
-        guard let properties = properties else { return result }
-        for (propKey, propValue) in properties {
-            // not sure if this comparison is actually necessary,
-            // but existed in the old destination so ...
-            if key.lowercased() == propKey.lowercased() {
-                if let value = propValue as? T {
-                    result = value
-                    break
-                }
-            }
-        }
-        return result
+    func extract<T>(key: String, from properties: [String: Any]?, withDefault fallback: T? = nil) -> T? {
+        let correctlyCasedKey = properties?.keys.first(where: { $0.lowercased() == key.lowercased() })
+        guard let correctlyCasedKey else { return fallback }
+        return properties?[correctlyCasedKey] as? T ?? fallback
     }
 }
 
