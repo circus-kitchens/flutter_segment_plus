@@ -143,6 +143,10 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
       // https://github.com/segment-integrations/analytics-kotlin-adjust
       // and importable by
       // implementation 'com.segment.analytics.kotlin.destinations:adjust:+'.
+      // In the meantime, we're using their integration from
+      // https://github.com/segment-integrations/analytics-kotlin-adjust/blob/main/lib/src/main/java/com/segment/analytics/kotlin/destinations/adjust/AdjustDestination.kt
+      // manually:
+      segmentInstance.add(plugin = AdjustDestination())
     }
 
     return segmentInstance

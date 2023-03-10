@@ -32,6 +32,8 @@ class _MyAppState extends State<MyApp> {
         trackApplicationLifecycleEvents: true,
         collectDeviceId: true,
         appboyIntegrationEnabled: true,
+        amplitudeIntegrationEnabled: true,
+        adjustIntegrationEnabled: true,
       ),
     ));
   }
