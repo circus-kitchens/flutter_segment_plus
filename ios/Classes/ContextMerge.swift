@@ -12,31 +12,31 @@ class ContextMerge: EventPlugin {
   var analytics: Segment.Analytics?
   var segmentContext: [String: Any] = [:]
   
-  public func track(event: TrackEvent) -> TrackEvent? {
+  func track(event: TrackEvent) -> TrackEvent? {
     var workingEvent = event;
     workingEvent.context = mergeContexts(eventContext: event.context)
     return workingEvent
   }
   
-  public func identify(event: IdentifyEvent) -> IdentifyEvent? {
+  func identify(event: IdentifyEvent) -> IdentifyEvent? {
     var workingEvent = event;
     workingEvent.context = mergeContexts(eventContext: event.context)
     return workingEvent
   }
   
-  public func screen(event: ScreenEvent) -> ScreenEvent? {
+  func screen(event: ScreenEvent) -> ScreenEvent? {
     var workingEvent = event;
     workingEvent.context = mergeContexts(eventContext: event.context)
     return workingEvent
   }
   
-  public func group(event: GroupEvent) -> GroupEvent? {
+  func group(event: GroupEvent) -> GroupEvent? {
     var workingEvent = event;
     workingEvent.context = mergeContexts(eventContext: event.context)
     return workingEvent
   }
   
-  public func alias(event: AliasEvent) -> AliasEvent? {
+  func alias(event: AliasEvent) -> AliasEvent? {
     var workingEvent = event;
     workingEvent.context = mergeContexts(eventContext: event.context)
     return workingEvent

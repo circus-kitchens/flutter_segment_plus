@@ -5,7 +5,7 @@ import SegmentBraze
 import SegmentSwiftAmplitude
 
 public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
-  var segment: Analytics? = nil
+  var segment: Analytics?
   var contextMerge = ContextMerge()
     
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -18,11 +18,15 @@ public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
     if (call.method == "config") {
       segment = config(call)
       result(true)
+      return
     }
+      
+    guard segment != nil else {
+        result(FlutterError(code: "", message: "You must call [config] before calling any other operation.", details: nil))
+        return
+    }
+      
     switch call.method {
-    case "config":
-      segment = config(call)
-      result(true)
     case "setContext":
       contextMerge.segmentContext = parseSegmentContext(call)
       result(true)
@@ -60,11 +64,11 @@ public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
     assert(arguments["options"] != nil)
     let configData = arguments["options"] as! [String: Any?]
     assert(configData["writeKey"] != nil)
-    let writeKey: String = configData["writeKey"] as! String
-    let trackApplicationLifecycleEvents: Bool = configData["trackApplicationLifecycleEvents"] as! Bool? ?? false
-    let enableBraze: Bool = configData["appboyIntegrationEnabled"] as! Bool? ?? false
-    let enableAmplitude: Bool = configData["amplitudeIntegrationEnabled"] as! Bool? ?? false
-    let enableAdjust: Bool = configData["adjustIntegrationEnabled"] as! Bool? ?? false
+    let writeKey = configData["writeKey"] as! String
+    let trackApplicationLifecycleEvents = configData["trackApplicationLifecycleEvents"] as? Bool ?? false
+    let enableBraze = configData["appboyIntegrationEnabled"] as? Bool ?? false
+    let enableAmplitude = configData["amplitudeIntegrationEnabled"] as? Bool ?? false
+    let enableAdjust = configData["adjustIntegrationEnabled"] as? Bool ?? false
     
     let configuration = Configuration(writeKey: writeKey)
       .trackApplicationLifecycleEvents(trackApplicationLifecycleEvents)
@@ -88,7 +92,7 @@ public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
     }
     
     if #available(iOS 14, *) {
-      let enableIdfaCollection: Bool = configData["collectDeviceId"] as! Bool? ?? false
+      let enableIdfaCollection = configData["collectDeviceId"] as? Bool ?? false
       if (enableIdfaCollection) {
         segment.add(plugin: IDFACollection())
       }
