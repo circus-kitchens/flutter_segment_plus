@@ -3,10 +3,10 @@ package com.circuskitchens.flutter_segment_plus
 import android.app.Activity
 import android.content.Context
 import androidx.annotation.VisibleForTesting
-import com.appboy.enums.Gender
-import com.appboy.enums.Month
-import com.appboy.enums.SdkFlavor
-import com.appboy.models.outgoing.AttributionData
+import com.braze.enums.Gender
+import com.braze.enums.Month
+import com.braze.enums.SdkFlavor
+import com.braze.models.outgoing.AttributionData
 import com.braze.Braze
 import com.braze.BrazeUser
 import com.braze.configuration.BrazeConfig
