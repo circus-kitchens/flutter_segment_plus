@@ -3,7 +3,8 @@ package com.circuskitchens.flutter_segment_plus
 
 import android.content.Context
 import com.segment.analytics.kotlin.android.Analytics
-import com.segment.analytics.kotlin.core.*
+import com.segment.analytics.kotlin.core.Analytics
+import com.segment.analytics.kotlin.core.BaseEvent
 import com.segment.analytics.kotlin.core.platform.Plugin
 import com.segment.analytics.kotlin.core.utilities.safeJsonObject
 import com.segment.analytics.kotlin.core.utilities.updateJsonObject
