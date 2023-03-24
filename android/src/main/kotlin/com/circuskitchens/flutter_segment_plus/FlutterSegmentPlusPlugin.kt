@@ -8,6 +8,7 @@ import com.segment.analytics.kotlin.core.BaseEvent
 import com.segment.analytics.kotlin.core.platform.Plugin
 import com.segment.analytics.kotlin.core.utilities.safeJsonObject
 import com.segment.analytics.kotlin.core.utilities.updateJsonObject
+import com.segment.analytics.kotlin.core.utilities.toJsonElement
 import com.segment.analytics.kotlin.destinations.amplitude.AmplitudeSession
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
