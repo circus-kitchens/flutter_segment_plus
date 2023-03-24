@@ -6,7 +6,6 @@ import com.segment.analytics.kotlin.android.Analytics
 import com.segment.analytics.kotlin.core.*
 import com.segment.analytics.kotlin.core.platform.Plugin
 import com.segment.analytics.kotlin.core.utilities.safeJsonObject
-import com.segment.analytics.kotlin.core.utilities.toJsonElement
 import com.segment.analytics.kotlin.core.utilities.updateJsonObject
 import com.segment.analytics.kotlin.destinations.amplitude.AmplitudeSession
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -126,7 +125,6 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
     })
 
     if (enableBraze) {
-      // TODO: replace Braze integration with custom one
       val braze = BrazeDestination(context)
       segmentInstance.add(plugin = braze)
       braze.add(BrazeMiddleware())

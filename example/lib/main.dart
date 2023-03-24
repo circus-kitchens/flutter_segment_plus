@@ -44,6 +44,7 @@ class _MyAppState extends State<MyApp> {
         'context-additional bool field': true,
         'context-additional num field': .3,
         'context-additional string field': 'test',
+        'context-additional null field': null,
         'context-nested': {'element': 'nested'},
         'context-array': [1, .3, 'test', false],
         'traits': {
@@ -63,6 +64,7 @@ class _MyAppState extends State<MyApp> {
         'additional bool field': true,
         'additional num field': .3,
         'additional string field': 'test',
+        'additional null field': null,
         'nested': {'element': 'nested'},
         'array': [1, .3, 'test', false]
       },
@@ -70,8 +72,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> track() async {
-    await _flutterSegmentPlusPlugin
-        .track(eventName: 'testEvent', properties: {'customProperty': true});
+    await _flutterSegmentPlusPlugin.track(eventName: 'testEvent', properties: {
+      'customProperty': true,
+      'null field': null,
+    });
   }
 
   Future<void> screen() async {
