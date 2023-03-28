@@ -110,6 +110,7 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
 
     val segmentInstance = Analytics(writeKey, context) {
       this.trackApplicationLifecycleEvents = trackApplicationLifecycleEvents
+      useLifecycleObserver = trackApplicationLifecycleEvents
       flushAt = 3
       flushInterval = 10
       this.collectDeviceId = collectDeviceId
