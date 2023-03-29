@@ -7,6 +7,7 @@ import com.segment.analytics.kotlin.core.Analytics
 import com.segment.analytics.kotlin.core.BaseEvent
 import com.segment.analytics.kotlin.core.platform.Plugin
 import com.segment.analytics.kotlin.core.utilities.safeJsonObject
+import com.segment.analytics.kotlin.core.utilities.toJsonElement
 import com.segment.analytics.kotlin.core.utilities.updateJsonObject
 import com.segment.analytics.kotlin.destinations.amplitude.AmplitudeSession
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -154,7 +155,7 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
 
   private fun identify(call: MethodCall, segment: Analytics) {
     val userId = call.argument<String>("userId")
-    val traits = call.argument<Map<String, Any>>("traits").toJsonElement()
+    val traits = call.argument<Map<String, Any>>("traits")!!.toJsonElement()
     if (userId != null) {
       segment.identify(userId, traits)
     } else {
@@ -164,19 +165,19 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
 
   private fun track(call: MethodCall, segment: Analytics) {
     val eventName = call.argument<String>("eventName")!!
-    val properties = call.argument<Map<String, Any>>("properties").toJsonElement()
+    val properties = call.argument<Map<String, Any>>("properties")!!.toJsonElement()
     segment.track(eventName, properties)
   }
 
   private fun screen(call: MethodCall, segment: Analytics) {
     val screenName = call.argument<String>("screenName")!!
-    val properties = call.argument<Map<String, Any>>("properties").toJsonElement()
+    val properties = call.argument<Map<String, Any>>("properties")!!.toJsonElement()
     segment.screen(screenName, properties)
   }
 
   private fun group(call: MethodCall, segment: Analytics) {
     val groupId = call.argument<String>("groupId")!!
-    val traits = call.argument<Map<String, Any>>("traits").toJsonElement()
+    val traits = call.argument<Map<String, Any>>("traits")!!.toJsonElement()
     segment.group(groupId, traits)
   }
 
@@ -202,7 +203,7 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
   private fun parseSegmentContext(call: MethodCall): JsonObject {
     val contextMap = call.argument<Map<String, Any>>("context")
     assert(contextMap != null)
-    val contextJson = contextMap.toJsonElement()
+    val contextJson = contextMap!!.toJsonElement()
     return contextJson.jsonObject
   }
 }
@@ -227,39 +228,3 @@ fun deepMerge(source: JsonObject, target: JsonObject): JsonObject {
   }
   return merged
 }
-
-fun Any?.toJsonElement(): JsonElement {
-  return when (this) {
-    is Number -> JsonPrimitive(this)
-    is Boolean -> JsonPrimitive(this)
-    is String -> JsonPrimitive(this)
-    is Array<*> -> this.toJsonArray()
-    is List<*> -> this.toJsonArray()
-    is Map<*, *> -> this.toJsonObject()
-    is JsonElement -> this
-    else -> JsonNull
-  }
-}
-
-fun Array<*>.toJsonArray(): JsonArray {
-  val array = mutableListOf<JsonElement>()
-  this.forEach { array.add(it.toJsonElement()) }
-  return JsonArray(array)
-}
-
-fun List<*>.toJsonArray(): JsonArray {
-  val array = mutableListOf<JsonElement>()
-  this.forEach { array.add(it.toJsonElement()) }
-  return JsonArray(array)
-}
-
-fun Map<*, *>.toJsonObject(): JsonObject {
-  val map = mutableMapOf<String, JsonElement>()
-  this.forEach {
-    if (it.key is String) {
-      map[it.key as String] = it.value.toJsonElement()
-    }
-  }
-  return JsonObject(map)
-}
-
