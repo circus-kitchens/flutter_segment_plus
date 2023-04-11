@@ -1,15 +1,10 @@
 //
 //  AdjustDestination.swift
-//  DestinationsExample
+//  AdjustDestination
 //
-//  Created by Brandon Sneed on 5/27/21.
+//  Created by Komal Dhingra on 24/1/23.
 //
-// NOTE: You can see this plugin in use in the DestinationsExample application.
-//
-// This plugin is NOT SUPPORTED by Segment.  It is here merely as an example,
-// and for your convenience should you find it useful.
-//
-// Adjust SPM package can be found here: https://github.com/adjust/ios_sdk
+
 // MIT License
 //
 // Copyright (c) 2021 Segment
@@ -36,21 +31,24 @@ import Foundation
 import Segment
 import Adjust
 
-@objc
-class AdjustDestination: NSObject, DestinationPlugin, RemoteNotifications {
-    let timeline = Timeline()
-    let type = PluginType.destination
-    let key = "Adjust"
-    weak var analytics: Analytics? = nil
+public class AdjustDestination: NSObject, DestinationPlugin {
+    public let timeline = Timeline()
+    public let type = PluginType.destination
+    public let key = "Adjust"
+    public var analytics: Analytics? = nil
     
-    private var settings: AdjustSettings? = nil
+    private var adjustSettings: AdjustSettings?
+    
+    public override init() { }
     
     public func update(settings: Settings, type: UpdateType) {
-        // we've already set up this singleton SDK, can't do it again, so skip.
+        // Skip if you have a singleton and don't want to keep updating via settings.
         guard type == .initial else { return }
         
+        // Grab the settings and assign them for potential later usage.
+        // Note: Since integrationSettings is generic, strongly type the variable.
         guard let settings: AdjustSettings = settings.integrationSettings(forPlugin: self) else { return }
-        self.settings = settings
+        adjustSettings = settings
         
         var environment = ADJEnvironmentSandbox
         if let _ = settings.setEnvironmentProduction {
@@ -104,7 +102,7 @@ class AdjustDestination: NSObject, DestinationPlugin, RemoteNotifications {
             let revenue: Double? = extract(key: "revenue", from: properties)
             let currency: String? = extract(key: "currency", from: properties, withDefault: "USD")
             let orderId: String? = extract(key: "orderId", from: properties)
-
+            
             if let revenue = revenue, let currency = currency {
                 adjEvent?.setRevenue(revenue, currency: currency)
             }
@@ -113,47 +111,43 @@ class AdjustDestination: NSObject, DestinationPlugin, RemoteNotifications {
                 adjEvent?.setTransactionId(orderId)
             }
             
+            Adjust.trackEvent(adjEvent)
         }
-
+        
         return event
     }
     
     public func reset() {
         Adjust.resetSessionPartnerParameters()
     }
-    
+}
+extension AdjustDestination: RemoteNotifications{
     public func registeredForRemoteNotifications(deviceToken: Data) {
         Adjust.setDeviceToken(deviceToken)
     }
 }
-
-// MARK: - Adjust Delegate conformance
-extension AdjustDestination: AdjustDelegate {
-    public func adjustAttributionChanged(_ attribution: ADJAttribution?) {
-        let campaign: [String: Any] = [
-            "source": attribution?.network ?? NSNull(),
-            "name": attribution?.campaign ?? NSNull(),
-            "content": attribution?.clickLabel ?? NSNull(),
-            "adCreative": attribution?.creative ?? NSNull(),
-            "adGroup": attribution?.adgroup ?? NSNull()
-        ]
-        
-        let properties: [String: Any] = [
-            "provider": "Adjust",
-            "trackerToken": attribution?.trackerToken ?? NSNull(),
-            "trackerName": attribution?.trackerName ?? NSNull(),
-            "campaign": campaign
-        ]
-        
-        analytics?.track(name: "Install Attributed", properties: properties)
+// Example of versioning for your plugin
+extension AdjustDestination: VersionedPlugin {
+    public static func version() -> String {
+        return "1.0.0"
     }
+}
+
+private struct AdjustSettings: Codable {
+    let appToken: String
+    let setEnvironmentProduction: Bool?
+    let setEventBufferingEnabled: Bool?
+    let trackAttributionData: Bool?
+    let setDelay: Bool?
+    let customEvents: JSON?
+    let delayTime: Double?
 }
 
 // MARK: - Support methods
 extension AdjustDestination {
     internal func mappedCustomEventToken(eventName: String) -> String? {
         var result: String? = nil
-        if let tokens = settings?.customEvents?.dictionaryValue {
+        if let tokens = adjustSettings?.customEvents?.dictionaryValue {
             result = tokens[eventName] as? String
         }
         return result
@@ -175,13 +169,29 @@ extension AdjustDestination {
         return result
     }
 }
+// MARK: - Adjust Delegate conformance
+extension AdjustDestination: AdjustDelegate {
+    public func adjustAttributionChanged(_ attribution: ADJAttribution?) {
+        let campaign: [String: Any] = [
+            "source": attribution?.network ?? NSNull(),
+            "name": attribution?.campaign ?? NSNull(),
+            "content": attribution?.clickLabel ?? NSNull(),
+            "adCreative": attribution?.creative ?? NSNull(),
+            "adGroup": attribution?.adgroup ?? NSNull()
+        ]
+        
+        let campaignStr = (campaign.compactMap({ (key, value) -> String in
+            return "\(key)=\(value)"
+        }) as Array).joined(separator: ";")
 
-private struct AdjustSettings: Codable {
-    let appToken: String
-    let setEnvironmentProduction: Bool?
-    let setEventBufferingEnabled: Bool?
-    let trackAttributionData: Bool?
-    let setDelay: Bool?
-    let customEvents: JSON?
-    let delayTime: Double?
+        debugPrint("campaignStr", campaignStr)
+        
+        let properties: [String: Codable] = [
+            "provider": "Adjust",
+            "trackerToken": attribution?.trackerToken ?? nil,
+            "trackerName": attribution?.trackerName ?? nil,
+            "campaign": campaignStr
+        ]
+        analytics?.track(name: "Install Attributed", properties: properties)
+    }
 }
