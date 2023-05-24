@@ -7,6 +7,7 @@ class SegmentConfig {
     this.adjustIntegrationEnabled = false,
     this.collectDeviceId = false,
     this.debug = false,
+    this.adjustExternalDeviceId,
   });
 
   final String writeKey;
@@ -16,6 +17,7 @@ class SegmentConfig {
   final bool adjustIntegrationEnabled;
   final bool collectDeviceId;
   final bool debug;
+  final String? adjustExternalDeviceId;
 
   Map<String, dynamic> toMap() => {
         'writeKey': writeKey,
@@ -25,5 +27,6 @@ class SegmentConfig {
         'adjustIntegrationEnabled': adjustIntegrationEnabled,
         'collectDeviceId': collectDeviceId,
         'debug': debug,
+        'adjustExternalDeviceId': adjustExternalDeviceId,
       };
 }

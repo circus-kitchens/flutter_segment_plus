@@ -86,7 +86,11 @@ public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
     }
     
     if (enableAdjust) {
-      segment.add(plugin: AdjustDestination())
+      let adjust = AdjustDestination()
+      if let deviceId = configData["adjustExternalDeviceId"] as? String, deviceId.count > 0 {
+        adjust.externalDeviceId = deviceId
+      }
+      segment.add(plugin: adjust)
     }
     
     if #available(iOS 14, *) {

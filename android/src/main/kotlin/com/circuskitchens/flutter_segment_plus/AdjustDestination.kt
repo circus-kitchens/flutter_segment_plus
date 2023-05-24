@@ -31,6 +31,7 @@ class AdjustDestination : DestinationPlugin(), AndroidLifecycle {
     internal var settings: AdjustSettings? = null
 
     override val key: String = "Adjust"
+    var externalDeviceId: String? = null
 
     override fun update(settings: Settings, type: Plugin.UpdateType) {
         super.update(settings, type)
@@ -57,6 +58,9 @@ class AdjustDestination : DestinationPlugin(), AndroidLifecycle {
                         val listener: OnAttributionChangedListener =
                             AdjustSegmentAttributionChangedListener(analytics)
                         adjustConfig.setOnAttributionChangedListener(listener)
+                    }
+                    if (externalDeviceId != null && externalDeviceId?.isNotEmpty() == true) {
+                        adjustConfig.externalDeviceId = externalDeviceId
                     }
                     Adjust.onCreate(adjustConfig)
                     Adjust.onResume()

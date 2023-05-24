@@ -36,6 +36,11 @@ public class AdjustDestination: NSObject, DestinationPlugin {
     public let type = PluginType.destination
     public let key = "Adjust"
     public var analytics: Analytics? = nil
+    /// External id assigned to a device. Must be assigned before initial configuration of the destination.
+    ///
+    /// By default, Adjust will only use IDFA to track devices, which is not suitable, as it's an opt-in tracking.
+    /// External id is a second identifier, that will let us reference the device throughout different services.
+    public var externalDeviceId: String? = nil
     
     private var adjustSettings: AdjustSettings?
     
@@ -68,7 +73,11 @@ public class AdjustDestination: NSObject, DestinationPlugin {
         if let useDelay = settings.setDelay, useDelay == true, let delayTime = settings.delayTime {
             adjustConfig?.delayStart = delayTime
         }
-        
+      
+        if let externalDeviceId {
+            adjustConfig?.externalDeviceId = externalDeviceId
+        }
+      
         Adjust.appDidLaunch(adjustConfig)
     }
     
@@ -79,6 +88,11 @@ public class AdjustDestination: NSObject, DestinationPlugin {
         
         if let anonId = event.anonymousId, anonId.count > 0 {
             Adjust.addSessionPartnerParameter("anonymous_id", value: anonId)
+        }
+      
+        
+      if let device = event.context?.dictionaryValue?["device"] as? [String: Any], let deviceId = device["id"] as? String, deviceId.count > 0 {
+            Adjust.addSessionPartnerParameter("device_id", value: deviceId)
         }
         
         return event

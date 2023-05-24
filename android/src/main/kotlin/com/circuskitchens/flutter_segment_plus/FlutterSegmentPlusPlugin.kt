@@ -145,6 +145,11 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
       // In the meantime, we're using their integration from
       // https://github.com/segment-integrations/analytics-kotlin-adjust/blob/main/lib/src/main/java/com/segment/analytics/kotlin/destinations/adjust/AdjustDestination.kt
       // manually:
+      val adjust = AdjustDestination()
+      val externalDeviceId = configData["adjustExternalDeviceId"] as String?;
+      if (externalDeviceId?.isBlank() == false) {
+        adjust.externalDeviceId = externalDeviceId
+      }
       segmentInstance.add(plugin = AdjustDestination())
     }
 
