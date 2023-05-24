@@ -73,4 +73,8 @@ abstract class FlutterSegmentPlusPlatform extends PlatformInterface {
   Future<void> setContext(Map<String, dynamic> context) {
     throw UnimplementedError('setContext() has not been implemented.');
   }
+
+  Future<String?> get adid {
+    throw UnimplementedError('setContext() has not been implemented.');
+  }
 }

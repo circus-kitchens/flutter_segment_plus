@@ -58,4 +58,9 @@ class FlutterSegmentPlus {
 
   Future<void> setContext(Map<String, dynamic> context) =>
       _segment.setContext(context);
+
+  /// Returns Adjust's device identifier, if available.
+  ///
+  /// To work, Adjust integration have to be enabled.
+  Future<String?> get adid => _segment.adid;
 }

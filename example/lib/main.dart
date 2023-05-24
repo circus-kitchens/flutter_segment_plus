@@ -20,6 +20,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _flutterSegmentPlusPlugin = FlutterSegmentPlus();
   String anonymousId = '';
+  String adid = '';
 
   @override
   void initState() {
@@ -98,6 +99,13 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> getAdid() async {
+    final id = await _flutterSegmentPlusPlugin.adid;
+    setState(() {
+      adid = id ?? '?';
+    });
+  }
+
   Future<void> reset() async {
     await _flutterSegmentPlusPlugin.reset();
   }
@@ -149,6 +157,10 @@ class _MyAppState extends State<MyApp> {
           TextButton(
             onPressed: flush,
             child: const Text('flush'),
+          ),
+          TextButton(
+            onPressed: getAdid,
+            child: Text('adid - $adid'),
           ),
         ]),
       ),

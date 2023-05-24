@@ -2,6 +2,7 @@ package com.circuskitchens.flutter_segment_plus
 
 
 import android.content.Context
+import com.adjust.sdk.Adjust
 import com.segment.analytics.kotlin.android.Analytics
 import com.segment.analytics.kotlin.core.*
 import com.segment.analytics.kotlin.core.platform.Plugin
@@ -82,6 +83,9 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
       "flush" -> {
         flush(segment!!)
         result.success(true)
+      }
+      "adid" -> {
+        adid(result)
       }
       else -> {
         result.notImplemented()
@@ -201,6 +205,15 @@ class FlutterSegmentPlusPlugin: FlutterPlugin, MethodCallHandler {
 
   private fun flush(segment: Analytics) {
     segment.flush()
+  }
+
+  /** Sends Adjust device identifier to the result.
+   *
+   * Available only when Adjust integration is enabled.
+   * See: https://help.adjust.com/en/article/gather-device-ids-android-sdk#adjust-device-identifier
+   */
+  private fun adid(result: Result) {
+    result.success(Adjust.getAdid())
   }
 
   private fun parseSegmentContext(call: MethodCall): JsonObject {

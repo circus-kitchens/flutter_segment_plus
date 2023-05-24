@@ -42,6 +42,10 @@ class MockFlutterSegmentPlusPlatform
   Future<void> track(
       {required String eventName,
       required Map<String, dynamic> properties}) async {}
+
+  @override
+  // TODO: implement adid
+  Future<String?> get adid => throw UnimplementedError();
 }
 
 void main() {

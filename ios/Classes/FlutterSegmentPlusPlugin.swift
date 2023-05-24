@@ -3,6 +3,7 @@ import UIKit
 import Segment
 import SegmentBrazeCircusCustom
 import SegmentSwiftAmplitude
+import Adjust
 
 public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
   var segment: Analytics? = nil
@@ -49,6 +50,9 @@ public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
       result(true)
     case "flush":
       reset(segment!)
+      result(true)
+    case "adid":
+      adid(result)
       result(true)
     default:
       result(FlutterMethodNotImplemented)
@@ -172,5 +176,17 @@ public class FlutterSegmentPlusPlugin: NSObject, FlutterPlugin {
   
   func flush(_ segment: Analytics) {
     segment.flush()
+  }
+  
+  func config(_ call: FlutterMethodCall) {
+    
+  }
+  
+  /// Sends Adjust device identifier to the result.
+  ///
+  /// Available only when Adjust integration is enabled.
+  /// See: https://help.adjust.com/en/article/gather-device-ids-ios-sdk#gather-adid
+  func adid(_ result: FlutterResult) {
+    result(Adjust.adid())
   }
 }

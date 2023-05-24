@@ -91,4 +91,7 @@ class MethodChannelFlutterSegmentPlus extends FlutterSegmentPlusPlatform {
       'context': context,
     });
   }
+
+  @override
+  Future<String?> get adid => methodChannel.invokeMethod('adid');
 }
