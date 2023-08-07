@@ -194,12 +194,13 @@ extension AdjustDestination: AdjustDelegate {
             "adGroup": attribution?.adgroup ?? NSNull()
         ]
         
-        let properties: [String: Codable] = [
+        let properties: [String: Any] = [
             "provider": "Adjust",
-            "trackerToken": attribution?.trackerToken ?? nil,
-            "trackerName": attribution?.trackerName ?? nil,
+            "trackerToken": attribution?.trackerToken ?? NSNull(),
+            "trackerName": attribution?.trackerName ?? NSNull(),
             "campaign": campaign
         ]
+        
         analytics?.track(name: "Install Attributed", properties: properties)
     }
 }
