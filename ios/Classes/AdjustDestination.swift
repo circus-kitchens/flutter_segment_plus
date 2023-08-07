@@ -194,17 +194,11 @@ extension AdjustDestination: AdjustDelegate {
             "adGroup": attribution?.adgroup ?? NSNull()
         ]
         
-        let campaignStr = (campaign.compactMap({ (key, value) -> String in
-            return "\(key)=\(value)"
-        }) as Array).joined(separator: ";")
-
-        debugPrint("campaignStr", campaignStr)
-        
         let properties: [String: Codable] = [
             "provider": "Adjust",
             "trackerToken": attribution?.trackerToken ?? nil,
             "trackerName": attribution?.trackerName ?? nil,
-            "campaign": campaignStr
+            "campaign": campaign
         ]
         analytics?.track(name: "Install Attributed", properties: properties)
     }
