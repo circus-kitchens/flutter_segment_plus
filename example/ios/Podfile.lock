@@ -1,19 +1,19 @@
 PODS:
-  - Adjust (4.33.4):
-    - Adjust/Core (= 4.33.4)
-  - Adjust/Core (4.33.4)
-  - BrazeKit (6.0.0)
+  - Adjust (4.33.6):
+    - Adjust/Core (= 4.33.6)
+  - Adjust/Core (4.33.6)
+  - BrazeKit (6.3.1)
   - Flutter (1.0.0)
   - flutter_segment_plus (0.0.1):
     - Adjust (~> 4.33.4)
     - Flutter
     - Segment (~> 1.3.4)
-    - SegmentBrazeCircusCustom (~> 1.2.0)
+    - SegmentBrazeCircusCustom (~> 2.0.0)
     - SegmentSwiftAmplitude (~> 1.1.6)
   - Segment (1.3.4):
     - Sovran (~> 1.0.2)
-  - SegmentBrazeCircusCustom (1.2.0):
-    - BrazeKit (~> 6.0.0)
+  - SegmentBrazeCircusCustom (2.0.0):
+    - BrazeKit (~> 6.3.0)
     - Segment (~> 1.3.4)
   - SegmentSwiftAmplitude (1.1.6):
     - Segment (~> 1.3.4)
@@ -40,15 +40,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_segment_plus/ios"
 
 SPEC CHECKSUMS:
-  Adjust: 4690e07ea401ee56d4d3f4f5bdad86c94f51903f
-  BrazeKit: 961eab8c8f9bf4b5589371d2aee1bfb8ed217861
+  Adjust: c3b6c3734928a617fefce81dc223fd5f104162be
+  BrazeKit: da969530d445eb2d107f5ec27d44d5eb21f1d3e9
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_segment_plus: 27c443c50ac57f7351e411ddeb5a361b3127260a
+  flutter_segment_plus: 38b9bb52a2bb636d2e03c07782a7abca45ff99ee
   Segment: f89f06f6e59e83e9db113e441c914f4bd329d1b1
-  SegmentBrazeCircusCustom: 1b173d7ced2a7458a55781848c2db5543153b845
+  SegmentBrazeCircusCustom: 17870aed5d2ead73ef1e599124a3d7922acdc48f
   SegmentSwiftAmplitude: 88a9be71adb8bb1192898d49893b479517076b3b
   Sovran: d2583dc3ac0088b74024358a0158af5ec7528b01
 
 PODFILE CHECKSUM: 3ab308be0aa880e654cb745f4ee98dd4d332682c
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1
