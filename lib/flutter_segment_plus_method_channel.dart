@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -71,8 +73,19 @@ class MethodChannelFlutterSegmentPlus extends FlutterSegmentPlusPlatform {
   }
 
   @override
-  Future<String?> get getAnonymousId {
-    return methodChannel.invokeMethod('anonymousId');
+  Future<String?> get getAnonymousId async {
+    final completer = Completer<String?>();
+    Future<String?> fetchId() async {
+      var id = (await methodChannel.invokeMethod('anonymousId')) as String?;
+      if (id != null && id.isNotEmpty) {
+        return id;
+      }
+      await Future.delayed(const Duration(milliseconds: 10));
+      return fetchId();
+    }
+
+    fetchId().then(completer.complete);
+    return completer.future;
   }
 
   @override
