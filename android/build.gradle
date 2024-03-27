@@ -66,6 +66,5 @@ android {
 //        implementation 'com.segment.analytics.kotlin.destinations:amplitude:1.5.2'
 //        implementation 'com.segment.analytics.kotlin.destinations:adjust:1.0.0'
         api 'com.adjust.sdk:adjust-android:4.33.0'
-        testImplementation 'org.junit.jupiter:junit-jupiter'
     }
 }
